@@ -1,17 +1,12 @@
 {
-  "name": "ctfg-frontend",
+  "name": "ctfg-build",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "next build --webpack",
     "dev": "next dev",
+    "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "pages:deploy": "npx @cloudflare/next-on-pages && node -e \"const fs = require('fs'); const path = require('path'); function walk(dir) { let results = []; const list = fs.readdirSync(dir); list.forEach(file => { file = path.join(dir, file); const stat = fs.statSync(file); if (stat && stat.isDirectory()) { results = results.concat(walk(file)); } else { results.push(file); } }); return results; }; walk('.vercel/output/static/_worker.js/__next-on-pages-dist__/functions').filter(f => f.endsWith('.func.js')).forEach(f => fs.writeFileSync(f, fs.readFileSync(f, 'utf8').replace(/\\\"async_hooks\\\"/g, '\\\"node:async_hooks\\\"')));\" && npx wrangler pages deploy --no-bundle",
-    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
-    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
-    "upload": "opennextjs-cloudflare build && opennextjs-cloudflare upload",
-    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
+    "lint": "next lint"
   },
   "dependencies": {
     "next": "16.2.7",
@@ -19,7 +14,6 @@
     "react-dom": "19.2.4"
   },
   "devDependencies": {
-    "@opennextjs/cloudflare": "^1.19.11",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -27,7 +21,6 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.7",
     "tailwindcss": "^4",
-    "typescript": "^5",
-    "wrangler": "^4.98.0"
+    "typescript": "^5"
   }
 }
