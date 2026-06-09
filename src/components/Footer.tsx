@@ -40,9 +40,11 @@ export function Footer() {
         {/* top row */}
         <div className="grid grid-cols-[minmax(200px,auto)_minmax(300px,1fr)_auto] items-center gap-10 pb-[30px] max-lg:grid-cols-1">
           <div className="text-[30px] font-medium tracking-[-0.01em] max-w-[14ch]">Stay up to date with the latest</div>
-          <form onSubmit={(e) => e.preventDefault()} className="flex items-center w-full max-w-[560px] h-14 pl-[18px] pr-[5px] rounded-pill bg-bg border-[1.5px] border-ink shadow-pill">
-            <input placeholder="Drop your email, join our letter…" className="flex-1 bg-transparent outline-none text-[15px] text-ink placeholder:text-ink-soft" />
-            <button className="inline-flex items-center gap-2 h-[46px] px-[22px] rounded-pill bg-primary text-bg font-ui font-bold text-[15px] uppercase tracking-[0.05em]">Subscribe <Arrow className="w-4 h-4" /></button>
+          <form action="https://guide.us19.list-manage.com/subscribe/post" method="post" target="_blank" className="flex items-center w-full max-w-[560px] h-14 pl-[18px] pr-[5px] rounded-pill bg-bg border-[1.5px] border-ink shadow-pill">
+            <input type="hidden" name="u" value="cdb853c4847acff0d0a09460d" />
+            <input type="hidden" name="id" value="ca5a70438b" />
+            <input type="email" name="EMAIL" required placeholder="Drop your email, join our letter…" className="flex-1 bg-transparent outline-none text-[15px] text-ink placeholder:text-ink-soft" />
+            <button type="submit" className="inline-flex items-center gap-2 h-[46px] px-[22px] rounded-pill bg-primary text-bg font-ui font-bold text-[15px] uppercase tracking-[0.05em]">Subscribe <Arrow className="w-4 h-4" /></button>
           </form>
           <div className="grid grid-cols-[repeat(6,30px)] gap-x-6 gap-y-[18px] justify-end max-lg:justify-start">
             {SOCIALS.map((s) => {

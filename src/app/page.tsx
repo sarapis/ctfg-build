@@ -31,7 +31,7 @@ const ENDPOINTS = [
 ];
 
 const SHOWCASE = [
-  { kind: "Reference app", title: "CTFG Directory", desc: "Search and explore thousands of curated civic-tech projects — our own flagship app, built on the dataset.", Icon: Grid, href: "/directory", flagship: true },
+  { kind: "Reference app", title: "CTFG Directory", desc: "Search and explore thousands of curated civic-tech projects — our own flagship app, built on the dataset.", Icon: Grid, href: "https://ctfg-frontend.devin-a8e.workers.dev", flagship: true },
   { kind: "AI Assistant", title: "Democracy Tech Copilot", desc: "A research assistant that recommends tools and orgs from the Guide for any civic challenge.", Icon: Sparkles, href: "https://app.civictech.guide/" },
   { kind: "Data tool", title: "Funding Explorer", desc: "Visualises grants and funders across the directory using the public API.", Icon: Database, href: "https://app.civictech.guide/" },
   { kind: "Bot", title: "@civictech daily", desc: "A social bot that surfaces a fresh project from the directory every day.", Icon: Plug, href: "https://app.civictech.guide/" },
@@ -39,10 +39,10 @@ const SHOWCASE = [
 const TINTS = ["#574FD9", "#01B583", "#877DFF"];
 
 const REPOS = [
-  { name: "ctfg5/packages/mcp", desc: "The official MCP server. JavaScript, runnable with npx.", lang: "JavaScript", href: "https://github.com/sarapis/ctfg5/tree/main/packages/mcp" },
-  { name: "ctfg5/packages/api-examples", desc: "Copy-paste fetch snippets in curl, Python, and JS.", lang: "Python", href: "https://github.com/sarapis/ctfg5/tree/main/packages/api-examples" },
-  { name: "ctfg5/packages/data", desc: "Export scripts and JSON dumps of the full directory under CC BY-NC-SA.", lang: "JSON", href: "https://github.com/sarapis/ctfg5/tree/main/packages/data" },
-  { name: "ctfg5/packages/notebooks", desc: "Jupyter notebooks for analysing the dataset.", lang: "Jupyter", href: "https://github.com/sarapis/ctfg5/tree/main/packages/notebooks" },
+  { name: "ctfg5/packages/mcp", desc: "The official MCP server. JavaScript, runnable with npx.", lang: "JavaScript", href: "https://github.com/sarapis/ctfg5" },
+  { name: "ctfg5/packages/api-examples", desc: "Copy-paste fetch snippets in curl, Python, and JS.", lang: "Python", href: "https://github.com/sarapis/ctfg5" },
+  { name: "ctfg5/packages/data", desc: "Export scripts and JSON dumps of the full directory under CC BY-NC-SA.", lang: "JSON", href: "https://github.com/sarapis/ctfg5" },
+  { name: "ctfg5/packages/notebooks", desc: "Jupyter notebooks for analysing the dataset.", lang: "Jupyter", href: "https://github.com/sarapis/ctfg5" },
 ];
 
 const MCP_CONFIG = `"mcpServers": {
@@ -105,6 +105,11 @@ export default function DevelopersPage() {
             <div className="flex flex-wrap gap-2.5 mt-5">
               {ASKS.map((a) => <span key={a} className="text-[13px] bg-surface border border-border rounded-pill px-3.5 py-2">{a}</span>)}
             </div>
+            <p className="mt-5">
+              <Link href="/developers/mcp" className="inline-flex items-center gap-1.5 font-ui font-bold text-sm tracking-[0.04em] uppercase text-primary hover:underline">
+                Full MCP integration docs <Arrow className="w-[15px] h-[15px]" />
+              </Link>
+            </p>
           </div>
           <CodeBlock name="claude_desktop_config.json" code={MCP_CONFIG} />
         </div>

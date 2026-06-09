@@ -19,7 +19,7 @@ export default function McpIntegrationPage() {
               Rather than relying on outdated web scraping or inefficient keyword searches, our system provides a standardized, machine-readable pipeline:
             </p>
             <ul className="list-disc pl-6 space-y-3">
-              <li><strong>Bulk Export API:</strong> A memory-efficient streaming endpoint (<code className="text-sm bg-bg-alt px-1.5 py-0.5 rounded text-ink">/api/v1/projects/export</code>) that provides instant access to all ~16,000+ projects in a single, paginated JSON schema.</li>
+              <li><strong>Bulk Export API:</strong> A memory-efficient streaming endpoint (<code className="text-sm bg-bg-alt px-1.5 py-0.5 rounded text-ink">https://ctfg-api-worker.devin-a8e.workers.dev/api/v1/projects/export</code>) that provides instant access to all ~16,000+ projects in a single, paginated JSON schema.</li>
               <li><strong>Standardized Schema:</strong> All projects are normalized with <code className="text-sm bg-bg-alt px-1.5 py-0.5 rounded text-ink">title</code>, <code className="text-sm bg-bg-alt px-1.5 py-0.5 rounded text-ink">description</code>, <code className="text-sm bg-bg-alt px-1.5 py-0.5 rounded text-ink">url</code>, <code className="text-sm bg-bg-alt px-1.5 py-0.5 rounded text-ink">repository_url</code>, and flat arrays for <code className="text-sm bg-bg-alt px-1.5 py-0.5 rounded text-ink">categories</code> and <code className="text-sm bg-bg-alt px-1.5 py-0.5 rounded text-ink">tags</code>.</li>
               <li><strong>Bring Your Own Vector DB:</strong> Ingest our raw data locally, generate your own embeddings (e.g. via Gemini <code className="text-sm bg-bg-alt px-1.5 py-0.5 rounded text-ink">text-embedding-004</code>), and perform lightning-fast semantic similarity searches entirely within your secure environment.</li>
               <li><strong>AI-Native:</strong> Provide the exact retrieved JSON structures to your LLM context window for highly accurate, hallucination-free responses.</li>
@@ -27,14 +27,14 @@ export default function McpIntegrationPage() {
 
             <h3 className="font-display text-2xl font-medium text-ink mt-12 mb-4">Getting Started</h3>
             <p>
-              Access to the MCP API endpoints is restricted to ensure stability and prevent abuse.
+              The public read endpoints (export and search) require no API key — you can start querying them right away. Only sync and admin endpoints require authentication.
             </p>
             <p>
-              To request an API key, please contact us at <a href="mailto:info@civictech.guide" className="text-primary hover:underline font-medium">info@civictech.guide</a> with a brief description of your project or agent.
+              If your use case needs sync or admin access, please contact us at <a href="mailto:info@civictech.guide" className="text-primary hover:underline font-medium">info@civictech.guide</a> with a brief description of your project or agent.
             </p>
             <div className="bg-bg-alt p-4 rounded-xl border border-border-soft font-mono text-sm mt-4">
-              Once approved, simply pass the key in your request headers:<br/><br/>
-              <code>Authorization: Bearer YOUR_API_KEY</code>
+              For sync/admin endpoints, pass the secret in your request headers:<br/><br/>
+              <code>Authorization: Bearer YOUR_SECRET</code>
             </div>
           </div>
         </div>
@@ -45,6 +45,11 @@ export default function McpIntegrationPage() {
             <h4 className="font-ui font-bold text-lg text-ink mb-4">API Endpoints</h4>
 
             <div className="space-y-6">
+              <div>
+                <strong className="block text-[13px] text-ink-soft uppercase tracking-[0.09em] mb-1">Base URL</strong>
+                <code className="text-sm bg-bg-alt px-2 py-1 rounded text-ink break-all block">https://ctfg-api-worker.devin-a8e.workers.dev</code>
+              </div>
+
               <div>
                 <strong className="block text-[13px] text-ink-soft uppercase tracking-[0.09em] mb-1">Export Stream</strong>
                 <code className="text-sm bg-bg-alt px-2 py-1 rounded text-ink break-all block">GET /api/v1/projects/export</code>

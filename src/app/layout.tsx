@@ -1,4 +1,4 @@
-// app/layout.tsx — root layout: fonts + chrome. Topbar/Footer wrap every directory page.
+// app/layout.tsx — root layout: fonts + chrome. Topbar/Footer wrap every page of the build/developer site.
 import type { Metadata } from "next";
 import { Space_Grotesk, Archivo, Inter } from "next/font/google";
 import { Topbar } from "../components/Topbar";
