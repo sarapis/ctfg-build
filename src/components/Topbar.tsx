@@ -21,7 +21,7 @@ export function Topbar() {
     <header className="relative z-20 flex items-center justify-between gap-8 min-h-[132px] px-10 py-6 bg-bg max-md:flex-wrap max-md:min-h-0 max-md:py-[18px]">
       <Link href="https://civictech.guide" className="w-[224px] shrink-0" aria-label="Civic Tech Field Guide">
         {/* horizontal brandmark (icon + two-line wordmark) → /public/assets */}
-        <img src="/assets/brandmark.svg" alt="Civic Tech Field Guide" className="w-full h-auto" />
+        <img src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/assets/brandmark.svg`} alt="Civic Tech Field Guide" className="w-full h-auto" />
       </Link>
 
       <div className="flex items-center gap-[26px] max-md:order-3 max-md:w-full max-md:flex-wrap">

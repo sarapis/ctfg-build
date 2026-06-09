@@ -56,7 +56,7 @@ export function Footer() {
 
         {/* link columns */}
         <div className="grid grid-cols-[260px_repeat(4,1fr)] gap-6 py-10 max-lg:grid-cols-2">
-          <div className="max-lg:col-span-2"><img src="/assets/logo-vertical.webp" alt="Civic Tech Field Guide" className="w-[150px] h-auto" /></div>
+          <div className="max-lg:col-span-2"><img src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/assets/logo-vertical.webp`} alt="Civic Tech Field Guide" className="w-[150px] h-auto" /></div>
           {COLUMNS.map((col) => (
             <div key={col.heading}>
               <h4 className="font-display font-bold text-[18px] uppercase tracking-[0.04em] mb-[18px]">{col.heading}</h4>
@@ -73,7 +73,7 @@ export function Footer() {
         <div className="grid grid-cols-[260px_repeat(4,1fr)] gap-6 pt-4 items-start max-lg:grid-cols-2 max-md:grid-cols-1">
           <div>
             <h4 className="font-display font-bold text-base uppercase tracking-[0.04em] mb-3.5">License</h4>
-            <img src="/assets/cc-by-nc-sa.webp" alt="Creative Commons BY-NC-SA" className="w-[130px] h-auto mb-3.5" />
+            <img src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/assets/cc-by-nc-sa.webp`} alt="Creative Commons BY-NC-SA" className="w-[130px] h-auto mb-3.5" />
             <p className="text-[13px] leading-[1.55] max-w-[30ch]">This guide and directory are free to use, re-use, adapt, and modify for non-commercial purposes as long as you link back with attribution. (Creative Commons BY NC SA)</p>
           </div>
           <div>
@@ -84,7 +84,7 @@ export function Footer() {
           </div>
           <div>
             <h4 className="font-display font-bold text-base uppercase tracking-[0.04em] mb-3.5">A project of</h4>
-            <a href="https://superbloom.design/" className="inline-block"><img src="/assets/superbloom.webp" alt="Superbloom" className="w-[92px] h-auto" /></a>
+            <a href="https://superbloom.design/" className="inline-block"><img src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/assets/superbloom.webp`} alt="Superbloom" className="w-[92px] h-auto" /></a>
           </div>
           <div>
             <h4 className="font-display font-bold text-base uppercase tracking-[0.04em] mb-3.5">Latest update</h4>
