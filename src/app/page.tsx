@@ -32,9 +32,8 @@ const ENDPOINTS = [
 
 const SHOWCASE = [
   { kind: "Reference app", title: "CTFG Directory", desc: "Search and explore thousands of curated civic-tech projects — our own flagship app, built on the dataset.", Icon: Grid, href: "https://ctfg-frontend.devin-a8e.workers.dev", flagship: true },
-  { kind: "AI Assistant", title: "Democracy Tech Copilot", desc: "A research assistant that recommends tools and orgs from the Guide for any civic challenge.", Icon: Sparkles, href: "https://app.civictech.guide/" },
-  { kind: "Data tool", title: "Funding Explorer", desc: "Visualises grants and funders across the directory using the public API.", Icon: Database, href: "https://app.civictech.guide/" },
-  { kind: "Bot", title: "@civictech daily", desc: "A social bot that surfaces a fresh project from the directory every day.", Icon: Plug, href: "https://app.civictech.guide/" },
+  { kind: "Mashup", title: "CTFG PilotCity Mashup", desc: "Blends the Field Guide dataset with PilotCity to connect civic tech with project-based learning.", Icon: Sparkles, href: "https://luxury-syrniki-bfc3ca.netlify.app" },
+  { kind: "Recommendation engine", title: "CTFG Taxonomy Recommender", desc: "Suggests the right Field Guide categories and tags for any project, powered by the directory's taxonomy.", Icon: Database, href: "https://github.com/mstem/guidefinder" },
 ];
 const TINTS = ["#574FD9", "#01B583", "#877DFF"];
 
@@ -139,7 +138,7 @@ export default function DevelopersPage() {
       {/* SHOWCASE */}
       <section id="showcase" className="py-[84px] px-10">
         <SectionHeading title="Built with the Guide" sub="Tools, research, and bots already running on the directory’s data." />
-        <div className="max-w-[1120px] mx-auto grid grid-cols-4 gap-6 max-lg:grid-cols-2 max-sm:grid-cols-1">
+        <div className="max-w-[1120px] mx-auto grid grid-cols-3 gap-6 max-lg:grid-cols-2 max-sm:grid-cols-1">
           {SHOWCASE.map((s, i) => {
             const internal = s.href.startsWith("/");
             return (
