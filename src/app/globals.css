@@ -1,0 +1,99 @@
+/* ============================================================
+   CTFG · Tailwind CSS v4 migration reference
+   Drop this into app/globals.css (or import it).
+   v4 is CSS-first: tokens live in @theme and AUTO-GENERATE
+   utilities based on their namespace:
+     --color-*   → bg-*, text-*, border-*, fill-*, ring-*
+     --font-*    → font-*
+     --shadow-*  → shadow-*
+     --radius-*  → rounded-*
+     --text-*    → text-* (font-size)
+   So `--color-primary` gives you `bg-primary text-primary border-primary`
+   with zero extra config — no tailwind.config.js needed.
+   ============================================================ */
+@import "tailwindcss";
+
+@theme {
+  /* ---- Surfaces ---- */
+  --color-bg:            #FBFBFB;
+  --color-bg-alt:        #F1F1F1;
+  --color-surface:       #FFFFFF;
+
+  /* ---- Ink ---- */
+  --color-ink:           #19191E;
+  --color-ink-soft:      #6B6B68;
+  --color-ink-faint:     #9FA4A3;
+
+  /* ---- Brand purple ---- */
+  --color-primary:       #574FD9;
+  --color-primary-deep:  #1F1A73;
+  --color-primary-lt:    #877DFF;
+  --color-primary-tint:  #F1F0FF;
+
+  /* ---- Mint / green ---- */
+  --color-mint:          #67F5C2;
+  --color-green:         #01B583;
+  --color-mint-tint:     #EAFFF9;
+
+  /* ---- Lines ---- */
+  --color-border:        #CDCDCB;
+  --color-border-soft:   #ECECEC;
+
+  /* ---- Fonts ----
+     Loaded via next/font in app/layout.tsx, which exposes these CSS variables:
+       --font-space-grotesk · --font-archivo · --font-inter
+     We point the semantic tokens at them (with a static fallback). */
+  --font-display: var(--font-space-grotesk), "Space Grotesk", sans-serif;  /* → font-display */
+  --font-ui:      var(--font-archivo), "Archivo", sans-serif;               /* → font-ui */
+  --font-body:    var(--font-inter), "Inter", sans-serif;                   /* → font-body */
+
+  /* ---- Signature hard-offset shadows become utilities ---- */
+  --shadow-bar:   2px 2px 0 0 #181818;            /* → shadow-bar  (topbar) */
+  --shadow-pill:  2px 2px 0 0 #1F1A73;            /* → shadow-pill (pills/cards) */
+
+  /* ---- Radius ---- */
+  --radius-pill:  999px;                          /* → rounded-pill */
+
+  /* ---- Type scale (optional semantic sizes) ---- */
+  --text-overline: 0.8125rem;   /* 13px */
+  --text-hero:     3rem;        /* 48px */
+  --text-section:  2.125rem;    /* 34px */
+}
+
+/* ============================================================
+   The handful of things that are NOT utilities.
+   Keep these as component/utility classes — don't force them
+   into Tailwind atoms.
+   ============================================================ */
+@layer components {
+  /* dashed section divider */
+  .divider { @apply border-0 border-t border-dashed border-ink w-full m-0; }
+
+  /* semantic type styles bundle size+weight+tracking+leading */
+  .h-hero    { @apply font-display text-[3.5rem] font-medium tracking-[-0.02em] leading-[1.05]; }
+  .h-page    { @apply font-display text-[3rem]   font-normal tracking-[-0.01em] leading-[1.1]; }
+  .h-section { @apply font-display text-[2.125rem] font-semibold tracking-[-0.01em] leading-tight; }
+  .overline  { @apply font-display text-[0.8125rem] font-medium tracking-[0.14em] uppercase text-ink-soft; }
+
+  /* hard-offset is just `shadow-bar` / `shadow-pill` now, e.g.:
+     <header class="shadow-bar ...">  <button class="shadow-pill ...">  */
+}
+
+@layer utilities {
+  /* Procedural grain — apply `.grain` to a positioned (relative) box */
+  .grain::after {
+    content: "";
+    position: absolute; inset: 0; pointer-events: none; z-index: 0;
+    opacity: .5; mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+  }
+  /* Faint topographic lines for hero/footer */
+  .topo::before {
+    content: ""; position: absolute; inset: -40px; opacity: .16; pointer-events: none;
+    background-image:
+      repeating-radial-gradient(circle at 30% 40%, transparent 0 22px, var(--color-ink) 22px 23px),
+      repeating-radial-gradient(circle at 78% 65%, transparent 0 30px, var(--color-ink) 30px 31px);
+    -webkit-mask-image: linear-gradient(#000, transparent 92%);
+            mask-image: linear-gradient(#000, transparent 92%);
+  }
+}
