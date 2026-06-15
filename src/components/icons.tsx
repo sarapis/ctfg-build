@@ -63,17 +63,14 @@ export const Terminal = (p: IconProps) => <Icon {...p}><g {...stroke}><rect x="3
 
 // Brand marks (not 1em — sized by the consumer)
 export const CcBadge = (p: React.SVGProps<SVGSVGElement>) => (
-  <svg viewBox="0 0 120 44" role="img" aria-label="Creative Commons BY-NC-SA" {...p}>
-    <rect width="120" height="44" rx="8" fill="#2C2C2C" />
+  <svg viewBox="0 0 64 44" role="img" aria-label="Creative Commons BY" {...p}>
+    <rect width="64" height="44" rx="8" fill="#2C2C2C" />
     <g stroke="#fff" strokeWidth="1.5" fill="none">
-      <circle cx="16" cy="14" r="9" /><circle cx="44" cy="14" r="9" /><circle cx="72" cy="14" r="9" /><circle cx="100" cy="14" r="9" />
+      <circle cx="16" cy="14" r="9" /><circle cx="44" cy="14" r="9" />
     </g>
     <text x="16" y="17.5" fontFamily="Arial,Helvetica,sans-serif" fontSize="8.5" fill="#fff" textAnchor="middle" fontWeight="700">cc</text>
     <g fill="#fff"><circle cx="44" cy="11" r="2.1" /><path d="M40.6 19c0-1.9 1.5-3.2 3.4-3.2s3.4 1.3 3.4 3.2z" /></g>
-    <text x="72" y="17.5" fontFamily="Arial" fontSize="9" fill="#fff" textAnchor="middle" fontWeight="700">$</text>
-    <line x1="65.5" y1="20.5" x2="78.5" y2="7.5" stroke="#fff" strokeWidth="1.4" />
-    <path d="M104 14a4 4 0 1 1-1.3-3" stroke="#fff" strokeWidth="1.4" fill="none" /><path d="M101.6 9.6l1.3 1.7-2.1.3z" fill="#fff" />
-    <text x="60" y="37" fontFamily="Arial" fontSize="8.5" fill="#fff" textAnchor="middle" letterSpacing="2.5">BY NC SA</text>
+    <text x="32" y="37" fontFamily="Arial" fontSize="8.5" fill="#fff" textAnchor="middle" letterSpacing="2.5">BY</text>
   </svg>
 );
 export const Superbloom = (p: React.SVGProps<SVGSVGElement>) => (

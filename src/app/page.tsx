@@ -40,7 +40,7 @@ const TINTS = ["#574FD9", "#01B583", "#877DFF"];
 const REPOS = [
   { name: "ctfg5/packages/mcp", desc: "The official MCP server. JavaScript, runnable with npx.", lang: "JavaScript", href: "https://github.com/sarapis/ctfg5" },
   { name: "ctfg5/packages/api-examples", desc: "Copy-paste fetch snippets in curl, Python, and JS.", lang: "Python", href: "https://github.com/sarapis/ctfg5" },
-  { name: "ctfg5/packages/data", desc: "Export scripts and JSON dumps of the full directory under CC BY-NC-SA.", lang: "JSON", href: "https://github.com/sarapis/ctfg5" },
+  { name: "ctfg5/packages/data", desc: "Export scripts and JSON dumps of the full directory under CC BY.", lang: "JSON", href: "https://github.com/sarapis/ctfg5" },
   { name: "ctfg5/packages/notebooks", desc: "Jupyter notebooks for analysing the dataset.", lang: "Jupyter", href: "https://github.com/sarapis/ctfg5" },
 ];
 
@@ -187,8 +187,8 @@ export default function DevelopersPage() {
         <div className="max-w-[1120px] mx-auto grid grid-cols-[auto_1fr_auto] gap-7 items-center p-8 border border-border rounded-2xl bg-surface max-md:grid-cols-1 max-md:text-center max-md:justify-items-center">
           <span className="grid place-items-center w-14 h-14 rounded-[14px] bg-mint-tint text-green"><Shield className="w-7 h-7" /></span>
           <div>
-            <h3 className="text-xl font-semibold mb-1.5">Free to build on — CC BY-NC-SA 4.0</h3>
-            <p className="text-sm text-ink-soft leading-[1.55] max-w-[64ch]">The Field Guide data is free to use, re-use, adapt, and modify for non-commercial purposes, as long as you link back with attribution and share alike. Building something commercial? <Link href="https://civictech.guide/contact/" className="text-primary hover:underline">Talk to us.</Link></p>
+            <h3 className="text-xl font-semibold mb-1.5">Free to build on — CC BY 4.0</h3>
+            <p className="text-sm text-ink-soft leading-[1.55] max-w-[64ch]">The Field Guide data is free to use, re-use, adapt, and modify for any purpose, including commercially, as long as you link back with attribution.</p>
           </div>
           <Button href="https://civictech.guide/guiding-principles/" variant="outlined" size="md">Read the terms</Button>
         </div>
