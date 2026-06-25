@@ -75,8 +75,8 @@ export function Footer() {
         <div className="grid grid-cols-[260px_repeat(4,1fr)] gap-6 pt-4 items-start max-lg:grid-cols-2 max-md:grid-cols-1">
           <div>
             <h4 className="font-display font-bold text-base uppercase tracking-[0.04em] mb-3.5">License</h4>
-            <img src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/assets/cc-by-nc-sa.webp`} alt="Creative Commons BY-NC-SA" className="w-[130px] h-auto mb-3.5" />
-            <p className="text-[13px] leading-[1.55] max-w-[30ch]">This guide and directory are free to use, re-use, adapt, and modify for non-commercial purposes as long as you link back with attribution. (Creative Commons BY NC SA)</p>
+            <img src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/assets/cc-by.webp`} alt="Creative Commons BY" className="w-[130px] h-auto mb-3.5" />
+            <p className="text-[13px] leading-[1.55] max-w-[30ch]">This guide and directory are free to use, re-use, adapt, and modify for any purpose, including commercially, as long as you link back with attribution. (Creative Commons BY)</p>
           </div>
           <div>
             <h4 className="font-display font-bold text-base uppercase tracking-[0.04em] mb-3.5">Supported by</h4>
