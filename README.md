@@ -4,15 +4,34 @@ The developer landing site for the [Civic Tech Field Guide](https://civictech.gu
 
 ## Three ways to access the data
 
+> **API host:** the directory API is currently served from
+> `https://staging-directory.civictech.guide` during infrastructure migration.
+> It moves to `https://directory.civictech.guide` at DNS cutover — update the base
+> URL below accordingly.
+
 ### MCP server
 
-Connect Claude, Cursor, or any MCP client to live, curated civic-tech data in one config block.
+A hosted, read-only MCP server is live over **Streamable HTTP** (no API key):
+
+```
+POST https://staging-directory.civictech.guide/api/mcp
+```
+
+Tools: `search_projects`, `get_project`, `list_categories`.
+
+Connect from Claude Code:
+
+```bash
+claude mcp add --transport http civictech-guide https://staging-directory.civictech.guide/api/mcp
+```
+
+From Claude Desktop / Cursor / any config-file client (bridge stdio → HTTP with `mcp-remote`; a native `@civictechguide/mcp` package is coming soon):
 
 ```json
 "mcpServers": {
   "civictech-guide": {
     "command": "npx",
-    "args": ["-y", "@civictechguide/mcp"]
+    "args": ["-y", "mcp-remote", "https://staging-directory.civictech.guide/api/mcp"]
   }
 }
 ```
@@ -25,37 +44,38 @@ Once connected, your assistant can search listings, pull project detail, and tra
 
 ### REST API
 
-Clean JSON over HTTPS. No key required for public reads.
+Clean JSON over HTTPS. No key required for public reads. Base: `https://staging-directory.civictech.guide`
 
 | Method | Endpoint | Description |
 |---|---|---|
-| GET | `/v1/projects` | Search and filter listings |
-| GET | `/v1/projects/:slug` | Single project detail |
-| GET | `/v1/categories` | Category tree |
-| GET | `/v1/collections/:slug` | Curated collection |
+| GET | `/api/v1/projects/search` | Search and filter listings (`q, category, status, limit`) |
+| GET | `/api/v1/projects/:slug` | Single project detail |
+| GET | `/api/v1/projects/export` | Bulk export, paginated |
+| GET | `/api/v1/categories` | Category index + counts |
+| GET | `/api/v1/facets` | Filter option values |
 
 ```bash
-curl "https://api.civictech.guide/v1/projects?category=govtech&country=KE&active=true"
+curl "https://staging-directory.civictech.guide/api/v1/projects/search?q=participatory+budgeting&limit=5"
 ```
 
 ### Showcase
 
 Apps already running on the dataset:
 
-- **[CTFG Directory](https://ctfg-frontend.devin-a8e.workers.dev)** — the flagship search and explore app
+- **[CTFG Directory](https://staging-directory.civictech.guide)** — the flagship search and explore app
 - **[CTFG PilotCity Mashup](https://luxury-syrniki-bfc3ca.netlify.app)** — Field Guide data blended with PilotCity for project-based learning
 - **[CTFG Taxonomy Recommender](https://github.com/mstem/guidefinder)** — suggests categories and tags for any project using the directory's taxonomy
 
 ## Code & examples
 
-All in the [`ctfg5`](https://github.com/sarapis/ctfg5) monorepo:
+Open-source packages are being prepared for release (coming soon):
 
 | Package | What it is |
 |---|---|
-| `packages/mcp` | The official MCP server — JavaScript, runnable with `npx` |
-| `packages/api-examples` | Copy-paste fetch snippets in curl, Python, and JS |
-| `packages/data` | Export scripts and JSON dumps of the full directory |
-| `packages/notebooks` | Jupyter notebooks for analysing the dataset |
+| `@civictechguide/mcp` | Native one-line MCP server (`npx`) — until it ships, use `mcp-remote` as above |
+| `api-examples` | Copy-paste fetch snippets in curl, Python, and JS |
+| `data` | Export scripts and JSON dumps of the full directory |
+| `notebooks` | Jupyter notebooks for analysing the dataset |
 
 ## Getting started
 
