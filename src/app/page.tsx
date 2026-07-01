@@ -10,9 +10,13 @@ import {
   Arrow, Search, ExtLink, Sparkles, Database, Plug, Shield, GitHub, Grid,
 } from "../components/icons";
 
+// Public host of the directory API. NOTE: this is the migration staging host — swap
+// to https://directory.civictech.guide at DNS cutover.
+const API_BASE = "https://staging-directory.civictech.guide";
+
 const PATHS = [
   { tag: "Query it", Icon: Sparkles, title: "MCP Server", desc: "Connect Claude, Cursor, or any MCP client to live, curated civic-tech data in one config block.", link: "Open setup", href: "#mcp" },
-  { tag: "Pull it", Icon: Database, title: "REST API", desc: "Fetch and filter listings, categories, and collections as clean JSON. No key for public reads.", link: "See endpoints", href: "#api" },
+  { tag: "Pull it", Icon: Database, title: "REST API", desc: "Fetch and filter listings, categories, and facets as clean JSON. No key for public reads.", link: "See endpoints", href: "#api" },
   { tag: "See it", Icon: Plug, title: "Showcase", desc: "Explore products, bots, and research already built on the directory — then make your own.", link: "Browse builds", href: "#showcase" },
 ];
 
@@ -24,35 +28,42 @@ const FEATURES = [
 const ASKS = ['"Find active govtech projects in Kenya"', '"Open-source participatory budgeting tools"', '"Who works on election integrity?"'];
 
 const ENDPOINTS = [
-  { verb: "GET", path: "/v1/projects", desc: "Search & filter listings" },
-  { verb: "GET", path: "/v1/projects/:slug", desc: "Single project detail" },
-  { verb: "GET", path: "/v1/categories", desc: "Category tree" },
-  { verb: "GET", path: "/v1/collections/:slug", desc: "Curated collection" },
+  { verb: "GET", path: "/api/v1/projects/search", desc: "Search & filter listings" },
+  { verb: "GET", path: "/api/v1/projects/:slug", desc: "Single project detail" },
+  { verb: "GET", path: "/api/v1/projects/export", desc: "Bulk export (paginated)" },
+  { verb: "GET", path: "/api/v1/categories", desc: "Category index + counts" },
+  { verb: "GET", path: "/api/v1/facets", desc: "Filter option values" },
 ];
 
 const SHOWCASE = [
-  { kind: "Reference app", title: "CTFG Directory", desc: "Search and explore thousands of curated civic-tech projects — our own flagship app, built on the dataset.", Icon: Grid, href: "https://ctfg-frontend.devin-a8e.workers.dev", flagship: true },
+  { kind: "Reference app", title: "CTFG Directory", desc: "Search and explore thousands of curated civic-tech projects — our own flagship app, built on the dataset.", Icon: Grid, href: API_BASE, flagship: true },
   { kind: "Mashup", title: "CTFG PilotCity Mashup", desc: "Blends the Field Guide dataset with PilotCity to connect civic tech with project-based learning.", Icon: Sparkles, href: "https://luxury-syrniki-bfc3ca.netlify.app" },
   { kind: "Recommendation engine", title: "CTFG Taxonomy Recommender", desc: "Suggests the right Field Guide categories and tags for any project, powered by the directory's taxonomy.", Icon: Database, href: "https://github.com/mstem/guidefinder" },
 ];
 const TINTS = ["#574FD9", "#01B583", "#877DFF"];
 
+// Open-source packages are being prepared; shown as "coming soon" until published.
 const REPOS = [
-  { name: "ctfg5/packages/mcp", desc: "The official MCP server. JavaScript, runnable with npx.", lang: "JavaScript", href: "https://github.com/sarapis/ctfg5" },
-  { name: "ctfg5/packages/api-examples", desc: "Copy-paste fetch snippets in curl, Python, and JS.", lang: "Python", href: "https://github.com/sarapis/ctfg5" },
-  { name: "ctfg5/packages/data", desc: "Export scripts and JSON dumps of the full directory under CC BY.", lang: "JSON", href: "https://github.com/sarapis/ctfg5" },
-  { name: "ctfg5/packages/notebooks", desc: "Jupyter notebooks for analysing the dataset.", lang: "Jupyter", href: "https://github.com/sarapis/ctfg5" },
+  { name: "@civictechguide/mcp", desc: "One-line native MCP server (npx). Until it ships, connect to the hosted MCP endpoint below via mcp-remote.", lang: "JavaScript", href: "https://github.com/sarapis", soon: true },
+  { name: "api-examples", desc: "Copy-paste fetch snippets in curl, Python, and JS.", lang: "Python", href: "https://github.com/sarapis", soon: true },
+  { name: "data", desc: "Export scripts and JSON dumps of the full directory under CC BY.", lang: "JSON", href: "https://github.com/sarapis", soon: true },
+  { name: "notebooks", desc: "Jupyter notebooks for analysing the dataset.", lang: "Jupyter", href: "https://github.com/sarapis", soon: true },
 ];
 
+// Works today: bridge any stdio MCP client to the hosted Streamable-HTTP endpoint
+// with mcp-remote. (A native @civictechguide/mcp package is coming soon.)
 const MCP_CONFIG = `"mcpServers": {
   "civictech-guide": {
     "command": "npx",
-    "args": ["-y", "@civictechguide/mcp"]
+    "args": [
+      "-y", "mcp-remote",
+      "${API_BASE}/api/mcp"
+    ]
   }
 }`;
-const CURL = `# Active govtech projects in Kenya
-curl "https://api.civictech.guide/v1/projects\\
-?category=govtech&country=KE&active=true"`;
+const CURL = `# Search active projects — no key required
+curl "${API_BASE}\\
+/api/v1/projects/search?q=participatory+budgeting&limit=5"`;
 
 export default function DevelopersPage() {
   return (
@@ -109,6 +120,9 @@ export default function DevelopersPage() {
                 Full MCP integration docs <Arrow className="w-[15px] h-[15px]" />
               </Link>
             </p>
+            <p className="text-[13px] text-ink-soft mt-3 leading-snug">
+              Hosted endpoint (no key): <code className="text-[12px] bg-bg-alt px-1.5 py-0.5 rounded break-all">{API_BASE}/api/mcp</code>. A native <code className="text-[12px] bg-bg-alt px-1.5 py-0.5 rounded">@civictechguide/mcp</code> package is coming soon.
+            </p>
           </div>
           <CodeBlock name="claude_desktop_config.json" code={MCP_CONFIG} />
         </div>
@@ -162,14 +176,14 @@ export default function DevelopersPage() {
 
       {/* CODE & EXAMPLES */}
       <section className="py-[84px] px-10 bg-bg-alt">
-        <SectionHeading title="Code & examples" sub="Clone a starter, copy a query, ship something this afternoon." />
+        <SectionHeading title="Code & examples" sub="Open-source starters and dumps — being packaged for release (coming soon)." />
         <div className="max-w-[1120px] mx-auto grid grid-cols-2 gap-5 max-md:grid-cols-1">
           {REPOS.map((r) => (
             <div key={r.name} className="relative grid grid-cols-[44px_1fr] gap-4 p-6 bg-surface border border-border rounded-[14px] transition hover:shadow-pill">
               <a href={r.href} aria-label={r.name} className="absolute inset-0" />
               <span className="grid place-items-center w-11 h-11 rounded-[11px] bg-ink text-white"><GitHub className="w-[22px] h-[22px]" /></span>
               <div>
-                <h3 className="flex items-center gap-2 text-[17px] font-semibold mb-[5px]">{r.name} <ExtLink className="w-[15px] h-[15px] shrink-0 text-ink-soft" /></h3>
+                <h3 className="flex items-center gap-2 text-[17px] font-semibold mb-[5px]">{r.name} {r.soon && <span className="text-[10px] font-bold uppercase tracking-[0.08em] bg-primary-tint text-primary px-1.5 py-0.5 rounded">Soon</span>} <ExtLink className="w-[15px] h-[15px] shrink-0 text-ink-soft" /></h3>
                 <p className="text-sm text-ink-soft leading-snug">{r.desc}</p>
                 <div className="flex gap-[18px] mt-3 text-[13px] text-ink-soft">
                   <span className="inline-flex items-center gap-1.5"><i className="w-2.5 h-2.5 rounded-full bg-primary inline-block" /> {r.lang}</span>

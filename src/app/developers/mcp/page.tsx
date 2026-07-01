@@ -1,3 +1,22 @@
+// Public host of the directory API. NOTE: migration staging host — swap to
+// https://directory.civictech.guide at DNS cutover.
+const API_BASE = "https://staging-directory.civictech.guide";
+
+const code = "text-sm bg-bg-alt px-1.5 py-0.5 rounded text-ink";
+
+const TOOLS = [
+  { name: "search_projects", desc: "Full-text + faceted search. Params: query, category, status (defaults to active-only; pass \"all\" for every status), limit (1–50)." },
+  { name: "get_project", desc: "Full detail for one project by slug (as returned by search_projects)." },
+  { name: "list_categories", desc: "All category names + how many projects each contains — for discovering filter values." },
+];
+
+const DESKTOP_CONFIG = `"mcpServers": {
+  "civictech-guide": {
+    "command": "npx",
+    "args": ["-y", "mcp-remote", "${API_BASE}/api/mcp"]
+  }
+}`;
+
 export default function McpIntegrationPage() {
   return (
     <div className="max-w-[1120px] mx-auto px-10 py-12">
@@ -8,34 +27,58 @@ export default function McpIntegrationPage() {
 
           <div className="space-y-6 text-[15px] leading-relaxed text-ink">
             <p>
-              The Civic Tech Field Guide offers a secure, high-performance API for developers and researchers to integrate our dataset of over 16,000 civic tech projects directly into AI agents and analytics pipelines using the <strong>Model Context Protocol (MCP)</strong>.
+              The Civic Tech Field Guide offers a public, high-performance API for developers and researchers to plug our dataset of ~16,000 civic tech projects directly into AI agents and analytics pipelines using the <strong>Model Context Protocol (MCP)</strong>.
             </p>
             <p>
-              By connecting your MCP server to our endpoints, your LLMs (like Google Gemini, Claude, or OpenAI) can directly query, embed, and perform semantic searches across our entire verified database in real-time. This powers use-cases like Retrieval-Augmented Generation (RAG), automated data analysis, trend discovery, and intelligent querying.
+              Connect the hosted MCP server to Claude, Cursor, or any MCP client and your assistant can query, read, and traverse the entire curated database in real time — powering Retrieval-Augmented Generation (RAG), data analysis, and grounded, hallucination-free answers.
             </p>
 
-            <h3 className="font-display text-2xl font-medium text-ink mt-12 mb-4">How It Works</h3>
+            <h3 className="font-display text-2xl font-medium text-ink mt-12 mb-4">Hosted MCP server</h3>
             <p>
-              Rather than relying on outdated web scraping or inefficient keyword searches, our system provides a standardized, machine-readable pipeline:
+              A ready-to-use, read-only MCP server is live over <strong>Streamable HTTP</strong> — <strong>no API key required</strong>:
+            </p>
+            <div className="bg-bg-alt p-4 rounded-xl border border-border-soft font-mono text-sm">
+              POST <code className={code}>{API_BASE}/api/mcp</code>
+            </div>
+            <p>It exposes these tools:</p>
+            <ul className="list-disc pl-6 space-y-2">
+              {TOOLS.map((t) => (
+                <li key={t.name}><code className={code}>{t.name}</code> — {t.desc}</li>
+              ))}
+            </ul>
+
+            <h4 className="font-ui font-bold text-lg text-ink mt-8 mb-2">Connect from Claude Code</h4>
+            <div className="bg-bg-alt p-4 rounded-xl border border-border-soft font-mono text-sm break-all">
+              claude mcp add --transport http civictech-guide {API_BASE}/api/mcp
+            </div>
+
+            <h4 className="font-ui font-bold text-lg text-ink mt-8 mb-2">Connect from Claude Desktop, Cursor, or any config-file client</h4>
+            <p>
+              Add a custom/remote connector pointing at the endpoint above, or bridge a stdio client to it with <code className={code}>mcp-remote</code>:
+            </p>
+            <div className="bg-bg-alt p-4 rounded-xl border border-border-soft font-mono text-sm whitespace-pre overflow-x-auto">{DESKTOP_CONFIG}</div>
+            <p className="text-sm text-ink-soft">
+              A native one-line <code className={code}>@civictechguide/mcp</code> package is coming soon; until then <code className={code}>mcp-remote</code> gives you the same one-config-block setup.
+            </p>
+
+            <h3 className="font-display text-2xl font-medium text-ink mt-12 mb-4">Prefer raw data? Use the REST API</h3>
+            <p>
+              Rather than scraping, ingest structured JSON directly and bring your own vector DB:
             </p>
             <ul className="list-disc pl-6 space-y-3">
-              <li><strong>Bulk Export API:</strong> A memory-efficient streaming endpoint (<code className="text-sm bg-bg-alt px-1.5 py-0.5 rounded text-ink">https://ctfg-api-worker.devin-a8e.workers.dev/api/v1/projects/export</code>) that provides instant access to all ~16,000+ projects in a single, paginated JSON schema.</li>
-              <li><strong>Standardized Schema:</strong> All projects are normalized with <code className="text-sm bg-bg-alt px-1.5 py-0.5 rounded text-ink">title</code>, <code className="text-sm bg-bg-alt px-1.5 py-0.5 rounded text-ink">description</code>, <code className="text-sm bg-bg-alt px-1.5 py-0.5 rounded text-ink">url</code>, <code className="text-sm bg-bg-alt px-1.5 py-0.5 rounded text-ink">repository_url</code>, and flat arrays for <code className="text-sm bg-bg-alt px-1.5 py-0.5 rounded text-ink">categories</code> and <code className="text-sm bg-bg-alt px-1.5 py-0.5 rounded text-ink">tags</code>.</li>
-              <li><strong>Bring Your Own Vector DB:</strong> Ingest our raw data locally, generate your own embeddings (e.g. via Gemini <code className="text-sm bg-bg-alt px-1.5 py-0.5 rounded text-ink">text-embedding-004</code>), and perform lightning-fast semantic similarity searches entirely within your secure environment.</li>
-              <li><strong>AI-Native:</strong> Provide the exact retrieved JSON structures to your LLM context window for highly accurate, hallucination-free responses.</li>
+              <li><strong>Bulk Export:</strong> A paginated endpoint (<code className={code}>{API_BASE}/api/v1/projects/export</code>) that streams all ~16,000 projects as JSON.</li>
+              <li><strong>Standardized Schema:</strong> Projects are normalized with <code className={code}>title</code>, <code className={code}>description</code>, <code className={code}>url</code>, <code className={code}>repository_url</code>, and flat arrays for <code className={code}>categories</code> and <code className={code}>tags</code>.</li>
+              <li><strong>Bring Your Own Vector DB:</strong> Ingest locally, generate your own embeddings (e.g. Gemini <code className={code}>text-embedding-004</code>), and run semantic search entirely in your environment.</li>
+              <li><strong>AI-Native:</strong> Feed the retrieved JSON straight into your LLM context for accurate, grounded responses.</li>
             </ul>
 
             <h3 className="font-display text-2xl font-medium text-ink mt-12 mb-4">Getting Started</h3>
             <p>
-              The public read endpoints (export and search) require no API key — you can start querying them right away. Only sync and admin endpoints require authentication.
+              The public read endpoints (MCP, export, search) require no API key — start querying right away. Only sync and admin endpoints require authentication.
             </p>
             <p>
-              If your use case needs sync or admin access, please contact us at <a href="mailto:info@civictech.guide" className="text-primary hover:underline font-medium">info@civictech.guide</a> with a brief description of your project or agent.
+              For sync or admin access, contact <a href="mailto:info@civictech.guide" className="text-primary hover:underline font-medium">info@civictech.guide</a> with a brief description of your project or agent, then pass the secret as <code className={code}>Authorization: Bearer YOUR_SECRET</code>.
             </p>
-            <div className="bg-bg-alt p-4 rounded-xl border border-border-soft font-mono text-sm mt-4">
-              For sync/admin endpoints, pass the secret in your request headers:<br/><br/>
-              <code>Authorization: Bearer YOUR_SECRET</code>
-            </div>
           </div>
         </div>
 
@@ -47,18 +90,28 @@ export default function McpIntegrationPage() {
             <div className="space-y-6">
               <div>
                 <strong className="block text-[13px] text-ink-soft uppercase tracking-[0.09em] mb-1">Base URL</strong>
-                <code className="text-sm bg-bg-alt px-2 py-1 rounded text-ink break-all block">https://ctfg-api-worker.devin-a8e.workers.dev</code>
+                <code className="text-sm bg-bg-alt px-2 py-1 rounded text-ink break-all block">{API_BASE}</code>
               </div>
 
               <div>
-                <strong className="block text-[13px] text-ink-soft uppercase tracking-[0.09em] mb-1">Export Stream</strong>
-                <code className="text-sm bg-bg-alt px-2 py-1 rounded text-ink break-all block">GET /api/v1/projects/export</code>
+                <strong className="block text-[13px] text-ink-soft uppercase tracking-[0.09em] mb-1">MCP (Streamable HTTP)</strong>
+                <code className="text-sm bg-bg-alt px-2 py-1 rounded text-ink break-all block">POST /api/mcp</code>
               </div>
 
               <div>
                 <strong className="block text-[13px] text-ink-soft uppercase tracking-[0.09em] mb-1">Keyword Search</strong>
                 <code className="text-sm bg-bg-alt px-2 py-1 rounded text-ink break-all block mb-2">GET /api/v1/projects/search</code>
                 <em className="text-xs text-ink-soft block">Params: q, category, status, limit</em>
+              </div>
+
+              <div>
+                <strong className="block text-[13px] text-ink-soft uppercase tracking-[0.09em] mb-1">Project Detail</strong>
+                <code className="text-sm bg-bg-alt px-2 py-1 rounded text-ink break-all block">GET /api/v1/projects/:slug</code>
+              </div>
+
+              <div>
+                <strong className="block text-[13px] text-ink-soft uppercase tracking-[0.09em] mb-1">Bulk Export</strong>
+                <code className="text-sm bg-bg-alt px-2 py-1 rounded text-ink break-all block">GET /api/v1/projects/export</code>
               </div>
             </div>
           </div>
