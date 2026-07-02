@@ -66,11 +66,16 @@ export default function McpIntegrationPage() {
               Rather than scraping, ingest structured JSON directly and bring your own vector DB:
             </p>
             <ul className="list-disc pl-6 space-y-3">
-              <li><strong>Bulk Export:</strong> A paginated endpoint (<code className={code}>{API_BASE}/api/v1/projects/export</code>) that streams all ~16,000 projects as JSON.</li>
+              <li><strong>Bulk Export:</strong> <code className={code}>{API_BASE}/api/v1/projects/export</code> returns <code className={code}>{'{ data, meta: { total, limit, offset } }'}</code>. It is <strong>paginated</strong> — max <code className={code}>limit</code> is 1000 (default 500) — so page with <code className={code}>offset</code> until <code className={code}>offset + data.length ≥ meta.total</code> (~15,800) to ingest the whole directory.</li>
               <li><strong>Standardized Schema:</strong> Projects are normalized with <code className={code}>title</code>, <code className={code}>description</code>, <code className={code}>url</code>, <code className={code}>repository_url</code>, and flat arrays for <code className={code}>categories</code> and <code className={code}>tags</code>.</li>
               <li><strong>Bring Your Own Vector DB:</strong> Ingest locally, generate your own embeddings (e.g. Gemini <code className={code}>text-embedding-004</code>), and run semantic search entirely in your environment.</li>
               <li><strong>AI-Native:</strong> Feed the retrieved JSON straight into your LLM context for accurate, grounded responses.</li>
             </ul>
+
+            <h4 className="font-ui font-bold text-lg text-ink mt-8 mb-2">Filtering &amp; status</h4>
+            <p>
+              Search results default to <strong>active projects only</strong>. Pass <code className={code}>status</code> = <code className={code}>Active</code>, <code className={code}>Inactive</code>, <code className={code}>N/A</code> (comma-separate for multiple, case-insensitive), or <code className={code}>all</code> to include every status. <code className={code}>limit</code> ranges 1–100 for REST search (1–50 for the MCP tool); an unknown <code className={code}>status</code> returns a 400.
+            </p>
 
             <h3 className="font-display text-2xl font-medium text-ink mt-12 mb-4">Getting Started</h3>
             <p>
@@ -101,7 +106,7 @@ export default function McpIntegrationPage() {
               <div>
                 <strong className="block text-[13px] text-ink-soft uppercase tracking-[0.09em] mb-1">Keyword Search</strong>
                 <code className="text-sm bg-bg-alt px-2 py-1 rounded text-ink break-all block mb-2">GET /api/v1/projects/search</code>
-                <em className="text-xs text-ink-soft block">Params: q, category, status, limit</em>
+                <em className="text-xs text-ink-soft block">Params: q, category, tags, country, status, openSource, limit (1–100), offset</em>
               </div>
 
               <div>
@@ -112,6 +117,18 @@ export default function McpIntegrationPage() {
               <div>
                 <strong className="block text-[13px] text-ink-soft uppercase tracking-[0.09em] mb-1">Bulk Export</strong>
                 <code className="text-sm bg-bg-alt px-2 py-1 rounded text-ink break-all block">GET /api/v1/projects/export</code>
+                <em className="text-xs text-ink-soft block">Paginated — {'{ data, meta }'}, limit ≤ 1000</em>
+              </div>
+
+              <div>
+                <strong className="block text-[13px] text-ink-soft uppercase tracking-[0.09em] mb-1">Categories</strong>
+                <code className="text-sm bg-bg-alt px-2 py-1 rounded text-ink break-all block">GET /api/v1/categories</code>
+              </div>
+
+              <div>
+                <strong className="block text-[13px] text-ink-soft uppercase tracking-[0.09em] mb-1">Facets</strong>
+                <code className="text-sm bg-bg-alt px-2 py-1 rounded text-ink break-all block">GET /api/v1/facets</code>
+                <em className="text-xs text-ink-soft block">Filter option values (categories, tags, statuses, countries…)</em>
               </div>
             </div>
           </div>
