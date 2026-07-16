@@ -1,6 +1,7 @@
-// Public host of the directory API. NOTE: migration staging host — swap to
-// https://directory.civictech.guide at DNS cutover.
-const API_BASE = "https://staging-directory.civictech.guide";
+// Stable public host of the directory API + MCP, fronted by a Cloudflare edge that
+// routes /mcp and /api/* to the origin box. This URL is cutover-stable — it stays the
+// same as the origin moves (staging → directory → apex), so it's safe to publicize.
+const API_BASE = "https://civictech.guide";
 
 const code = "text-sm bg-bg-alt px-1.5 py-0.5 rounded text-ink";
 
@@ -13,7 +14,7 @@ const TOOLS = [
 const DESKTOP_CONFIG = `"mcpServers": {
   "civictech-guide": {
     "command": "npx",
-    "args": ["-y", "mcp-remote", "${API_BASE}/api/mcp"]
+    "args": ["-y", "mcp-remote", "${API_BASE}/mcp"]
   }
 }`;
 
@@ -27,7 +28,7 @@ export default function McpIntegrationPage() {
 
           <div className="space-y-6 text-[15px] leading-relaxed text-ink">
             <p>
-              The Civic Tech Field Guide offers a public, high-performance API for developers and researchers to plug our dataset of ~16,000 civic tech projects directly into AI agents and analytics pipelines using the <strong>Model Context Protocol (MCP)</strong>.
+              The Civic Tech Field Guide offers a public, high-performance API for developers and researchers to plug our dataset of ~12,000 civic tech projects directly into AI agents and analytics pipelines using the <strong>Model Context Protocol (MCP)</strong>.
             </p>
             <p>
               Connect the hosted MCP server to Claude, Cursor, or any MCP client and your assistant can query, read, and traverse the entire curated database in real time — powering Retrieval-Augmented Generation (RAG), data analysis, and grounded, hallucination-free answers.
@@ -38,7 +39,7 @@ export default function McpIntegrationPage() {
               A ready-to-use, read-only MCP server is live over <strong>Streamable HTTP</strong> — <strong>no API key required</strong>:
             </p>
             <div className="bg-bg-alt p-4 rounded-xl border border-border-soft font-mono text-sm">
-              POST <code className={code}>{API_BASE}/api/mcp</code>
+              POST <code className={code}>{API_BASE}/mcp</code>
             </div>
             <p>It exposes these tools:</p>
             <ul className="list-disc pl-6 space-y-2">
@@ -49,7 +50,7 @@ export default function McpIntegrationPage() {
 
             <h4 className="font-ui font-bold text-lg text-ink mt-8 mb-2">Connect from Claude Code</h4>
             <div className="bg-bg-alt p-4 rounded-xl border border-border-soft font-mono text-sm break-all">
-              claude mcp add --transport http civictech-guide {API_BASE}/api/mcp
+              claude mcp add --transport http civictech-guide {API_BASE}/mcp
             </div>
 
             <h4 className="font-ui font-bold text-lg text-ink mt-8 mb-2">Connect from Claude Desktop, Cursor, or any config-file client</h4>
@@ -66,7 +67,7 @@ export default function McpIntegrationPage() {
               Rather than scraping, ingest structured JSON directly and bring your own vector DB:
             </p>
             <ul className="list-disc pl-6 space-y-3">
-              <li><strong>Bulk Export:</strong> A paginated endpoint (<code className={code}>{API_BASE}/api/v1/projects/export</code>) that streams all ~16,000 projects as JSON.</li>
+              <li><strong>Bulk Export:</strong> A paginated endpoint (<code className={code}>{API_BASE}/api/v1/projects/export</code>) that streams all ~12,000 projects as JSON.</li>
               <li><strong>Standardized Schema:</strong> Projects are normalized with <code className={code}>title</code>, <code className={code}>description</code>, <code className={code}>url</code>, <code className={code}>repository_url</code>, and flat arrays for <code className={code}>categories</code> and <code className={code}>tags</code>.</li>
               <li><strong>Bring Your Own Vector DB:</strong> Ingest locally, generate your own embeddings (e.g. Gemini <code className={code}>text-embedding-004</code>), and run semantic search entirely in your environment.</li>
               <li><strong>AI-Native:</strong> Feed the retrieved JSON straight into your LLM context for accurate, grounded responses.</li>
@@ -95,7 +96,7 @@ export default function McpIntegrationPage() {
 
               <div>
                 <strong className="block text-[13px] text-ink-soft uppercase tracking-[0.09em] mb-1">MCP (Streamable HTTP)</strong>
-                <code className="text-sm bg-bg-alt px-2 py-1 rounded text-ink break-all block">POST /api/mcp</code>
+                <code className="text-sm bg-bg-alt px-2 py-1 rounded text-ink break-all block">POST /mcp</code>
               </div>
 
               <div>

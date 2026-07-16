@@ -10,9 +10,10 @@ import {
   Arrow, Search, ExtLink, Sparkles, Database, Plug, Shield, GitHub, Grid,
 } from "../components/icons";
 
-// Public host of the directory API. NOTE: this is the migration staging host — swap
-// to https://directory.civictech.guide at DNS cutover.
-const API_BASE = "https://staging-directory.civictech.guide";
+// Stable public host of the directory API + MCP, fronted by a Cloudflare edge that
+// routes /mcp and /api/* to the origin box. Cutover-stable (origin can move
+// staging → directory → apex without changing this URL).
+const API_BASE = "https://civictech.guide";
 
 const PATHS = [
   { tag: "Query it", Icon: Sparkles, title: "MCP Server", desc: "Connect Claude, Cursor, or any MCP client to live, curated civic-tech data in one config block.", link: "Open setup", href: "#mcp" },
@@ -57,7 +58,7 @@ const MCP_CONFIG = `"mcpServers": {
     "command": "npx",
     "args": [
       "-y", "mcp-remote",
-      "${API_BASE}/api/mcp"
+      "${API_BASE}/mcp"
     ]
   }
 }`;
@@ -121,7 +122,7 @@ export default function DevelopersPage() {
               </Link>
             </p>
             <p className="text-[13px] text-ink-soft mt-3 leading-snug">
-              Hosted endpoint (no key): <code className="text-[12px] bg-bg-alt px-1.5 py-0.5 rounded break-all">{API_BASE}/api/mcp</code>. A native <code className="text-[12px] bg-bg-alt px-1.5 py-0.5 rounded">@civictechguide/mcp</code> package is coming soon.
+              Hosted endpoint (no key): <code className="text-[12px] bg-bg-alt px-1.5 py-0.5 rounded break-all">{API_BASE}/mcp</code>. A native <code className="text-[12px] bg-bg-alt px-1.5 py-0.5 rounded">@civictechguide/mcp</code> package is coming soon.
             </p>
           </div>
           <CodeBlock name="claude_desktop_config.json" code={MCP_CONFIG} />
