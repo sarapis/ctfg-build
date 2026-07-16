@@ -63,8 +63,7 @@ const MCP_CONFIG = `"mcpServers": {
   }
 }`;
 const CURL = `# Search active projects — no key required
-curl "${API_BASE}\\
-/api/v1/projects/search?q=participatory+budgeting&limit=5"`;
+curl "${API_BASE}/api/v1/projects/search?q=participatory+budgeting&limit=5"`;
 
 export default function DevelopersPage() {
   return (
