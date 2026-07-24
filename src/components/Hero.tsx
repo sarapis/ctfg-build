@@ -12,16 +12,17 @@ export function Hero({
   children?: React.ReactNode;       // lede / intro / extra (curator line, quotes…)
   className?: string;
 }) {
+  const bgUrl = `${process.env.NEXT_PUBLIC_BASE_PATH || ""}/assets/hero-bg.png`;
   return (
     <section
       className={cn(
-        "relative overflow-hidden topo px-10 pt-[90px] pb-[70px]",
-        "bg-bg-alt",
-        "[background-image:radial-gradient(60%_120%_at_10%_0%,rgba(135,125,255,.42),transparent_55%),radial-gradient(70%_130%_at_92%_6%,rgba(103,245,194,.5),transparent_55%)]",
-        // fade the texture into the page at the bottom
+        "relative overflow-hidden px-10 pt-[90px] pb-[70px]",
+        "bg-bg-alt bg-cover bg-top bg-no-repeat",
+        // fade the image into the page at the bottom
         "after:content-[''] after:absolute after:inset-0 after:bg-[linear-gradient(transparent_45%,var(--color-bg))] after:pointer-events-none",
         className
       )}
+      style={{ backgroundImage: `url("${bgUrl}")` }}
     >
       <div className="relative z-[1] max-w-[780px] mx-auto text-center flex flex-col items-center gap-3.5">
         {breadcrumb && <div className="text-[13px] tracking-[0.04em] text-ink-soft">{breadcrumb}</div>}
